@@ -9,7 +9,7 @@ public sealed class LoginPage
     private readonly ILocator _usernameInput;
     private readonly ILocator _passwordInput;
     private readonly ILocator _loginButton;
-    private readonly ILocator _userMenu;
+    private readonly ILocator _assetLookupInput;
 
     public LoginPage(IPage page)
     {
@@ -19,9 +19,7 @@ public sealed class LoginPage
         _loginButton = page.GetByRole(
             AriaRole.Button,
             new PageGetByRoleOptions { Name = "Login" });
-        _userMenu = page.GetByText(
-            "Admin User",
-            new PageGetByTextOptions { Exact = true });
+       _assetLookupInput = page.GetByPlaceholder("Lookup by Asset Tag");;
     }
 
     public async Task NavigateAsync()
@@ -42,10 +40,7 @@ public sealed class LoginPage
         await _passwordInput.FillAsync(password);
         await _loginButton.ClickAsync();
 
-        await _userMenu.WaitForAsync(
-            new LocatorWaitForOptions
-            {
-                State = WaitForSelectorState.Visible
-            });
+        await _assetLookupInput.WaitForAsync(
+            new LocatorWaitForOptions { State = WaitForSelectorState.Visible });;
     }
 }
