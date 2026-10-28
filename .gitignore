@@ -1,0 +1,22 @@
+# .NET build output
+bin/
+obj/
+
+# Test results and generated screenshots
+TestResults/
+test-results/
+playwright-report/
+
+# IDE files
+.vs/
+.vscode/
+*.user
+*.suo
+
+# Local environment or secret files
+.env
+.env.*
+
+# Operating-system files
+.DS_Store
+Thumbs.db
