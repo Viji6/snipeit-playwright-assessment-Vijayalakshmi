@@ -27,7 +27,7 @@ The automated test performs the following workflow:
 - C#
 - NUnit
 - Microsoft Playwright
-- Chromium
+- Chromium browser
 
 ## Project structure
 
@@ -37,8 +37,78 @@ Models/         Test data models
 Pages/          Page Object Model classes
 Tests/          NUnit test classes and test setup
 ```
+## Prerequisites
 
-## Project structure
+- .NET 10 SDK
+- Git, if cloning the repository
+- The Playwright Chromium browser
+- Windows Command Prompt or PowerShell
+
+## Setup and execution
+
+The following commands were verified on Windows.
+
+### 1. Clone the repository
+
+```cmd
+git clone https://github.com/Viji6/snipeit-playwright-assessment-Vijayalakshmi.git
+cd snipeit-playwright-assessment-Vijayalakshmi
+```
+### 2. Restore packages and build
+
+```cmd
+dotnet restore
+dotnet build
+```
+### 3. Install the Playwright Chromium browser
+
+```cmd
+powershell -ExecutionPolicy Bypass -File .\bin\Debug\net10.0\playwright.ps1 install chromium
+```
+### 4. Set Snipe-IT demo credentials
+
+Run the following in **Windows Command Prompt**:
+
+```cmd
+set SNIPEIT_USERNAME=admin
+set SNIPEIT_PASSWORD=password
+```
+### 5. Run the test
+
+```cmd
+set HEADED=1
+dotnet test --settings playwright.runsettings --filter "FullyQualifiedName~AssetLifecycleTests"
+```
+## Expected result
+
+A successful execution displays terminal logs containing:
+
+- Generated Asset Tag
+- Generated Serial Number
+- Selected checkout user
+- Details validation result
+- History validation result
+
+Example result:
+
+```text
+Test summary: total: 1, failed: 0, succeeded: 1
+```
+
+The test also creates full-page evidence screenshots:
+
+```text
+bin\Debug\net10.0\test-results\asset-details-<asset-tag>.png
+bin\Debug\net10.0\test-results\asset-history-<asset-tag>.png
+```
+
+If a test fails, a failure screenshot is created automatically:
+
+```text
+bin\Debug\net10.0\test-results\failure.png
+```
+
+## Quality and Design Decisions
 
 - **Page Object Model:** Page interactions are separated from test workflow logic, making the test easier to maintain and read.
 - **Reliable locators:** The automation uses stable element IDs, accessible role-based locators, and scoped locators instead of brittle XPath or positional selectors.
@@ -49,3 +119,7 @@ Tests/          NUnit test classes and test setup
 - **Defensive validation:** Guard clauses validate required input, and missing credentials produce a clear configuration error.
 - **Test evidence:** Terminal logs show the created asset and assigned user. Full-page screenshots are captured for the Asset Details and History validations, with an additional screenshot captured if a test fails.
 - **Shared-environment safety:** The test is marked non-parallel because it creates and updates data in a public shared demo environment.
+
+## Notes
+
+This project uses the public Snipe-IT demo environment. Each execution creates a new asset and checks it out to a randomly selected existing user. The generated timestamp-based Asset Tag ensures each test run uses unique test data.

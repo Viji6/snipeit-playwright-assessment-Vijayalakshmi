@@ -87,6 +87,7 @@ public sealed class AssetsPage
         ArgumentException.ThrowIfNullOrWhiteSpace(assetTag);
 
         await _searchInput.FillAsync(assetTag);
+        // The Snipe-IT table applies the search filter after a keyboard event.
         await _searchInput.PressAsync("Enter");
 
         await GetAssetRow(assetTag).WaitForAsync(

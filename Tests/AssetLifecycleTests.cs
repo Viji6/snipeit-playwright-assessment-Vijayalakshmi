@@ -5,6 +5,7 @@ using SnipeIt.Playwright.Assessment.Pages;
 namespace SnipeIt.Playwright.Assessment.Tests;
 
 [TestFixture]
+// The public demo is a shared mutable environment, so this test must not run in parallel.
 [NonParallelizable]
 public sealed class AssetLifecycleTests : TestBase {
     [Test]
